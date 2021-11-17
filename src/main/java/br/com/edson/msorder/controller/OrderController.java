@@ -1,9 +1,6 @@
 package br.com.edson.msorder.controller;
 
-import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -22,69 +19,42 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.edson.msorder.controller.dto.OrderDto;
 import br.com.edson.msorder.controller.dto.OrderRequest;
-import br.com.edson.msorder.modelo.Order;
-import br.com.edson.msorder.repository.OrderRepository;
+import br.com.edson.msorder.service.OrderService;
 
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
     
     @Autowired
-    private OrderRepository orderRepository;
+    private OrderService orderService;
 
     @GetMapping
     public List<OrderDto> list() {
-        List<Order> orders = orderRepository.findAll();
-
-        return OrderDto.converter(orders);
+        return orderService.list();
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity<OrderDto> cadastrar(@RequestBody @Valid OrderRequest request, UriComponentsBuilder uriBuilder){
-        Order order = request.converter();
-        orderRepository.save(order);
 
-        URI uri = uriBuilder.path("/orders/{id}").buildAndExpand(order.getId()).toUri();
-
-        return ResponseEntity.created(uri).body(new OrderDto(order));
+        return orderService.cadastrar(request, uriBuilder);
     }
 
-    @RequestMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<OrderDto> detalhar(@PathVariable Integer id){
-        Optional<Order> order = orderRepository.findById(id);
 
-        if (order.isPresent()) {
-            return ResponseEntity.ok(new OrderDto(order.get()));
-        }
-
-        return ResponseEntity.notFound().build();
+        return orderService.detalhar(id);
     }
 
     @PutMapping("/{id}")
-    @Transactional
     public ResponseEntity<OrderDto> atualizar(@PathVariable Integer id, @RequestBody @Valid OrderRequest request){
-        Optional<Order> optional = orderRepository.findById(id);
-
-        if (optional.isPresent()) {
-            Order order = request.atualizar(id, orderRepository);
-            return ResponseEntity.ok(new OrderDto(order));
-        }
         
-        return ResponseEntity.notFound().build();
+        return orderService.atualizar(id, request);
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> remover(@PathVariable Integer id){
-        Optional<Order> optional = orderRepository.findById(id);
-
-        if (optional.isPresent()) {
-            orderRepository.deleteById(id);
-
-            return ResponseEntity.ok().build();
-        }
+    public ResponseEntity<OrderDto> remover(@PathVariable Integer id){
         
-        return ResponseEntity.notFound().build();
+        return orderService.remover(id);
     }
 }

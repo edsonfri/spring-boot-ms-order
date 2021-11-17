@@ -11,8 +11,10 @@ import br.com.edson.msorder.repository.OrderRepository;
 public class OrderRequest {
     @NotNull @NotEmpty @Length(min = 5)
     private String description;
+    
     @NotNull @NotEmpty @Length(min = 5)
     private String name;
+   
     @NotNull
     private Double total;
 
@@ -34,9 +36,7 @@ public class OrderRequest {
     public void setTotal(Double total) {
         this.total = total;
     }
-    public Order converter() {
-        return new Order(description, name, total);
-    }
+  
     public Order atualizar(Integer id, OrderRepository orderRepository) {
         Order order = orderRepository.getById(id);
         

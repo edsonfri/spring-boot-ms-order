@@ -23,9 +23,9 @@ public class Order {
     public Order(){}
     
     public Order(String description, String name, Double total) {
-        this.description = description;
+        /*this.description = description;
         this.name = name;
-        this.total = total;
+        this.total = total;*/
     }
 
     public Integer getId() {
