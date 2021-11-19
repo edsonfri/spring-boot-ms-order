@@ -77,4 +77,11 @@ public class OrderService {
         return ResponseEntity.notFound().build();
     }
 
+    public List<OrderDto> search(String q, Double minTotal , Double maxTotal, String status){
+        
+        List<Order> orders = orderRepository.search(q, minTotal, maxTotal, status);
+
+        return OrderDto.converter(orders);
+    }
+
 }
