@@ -2,6 +2,7 @@ package br.com.edson.msorder.controller.dto;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -15,7 +16,7 @@ public class OrderRequest {
     @NotNull @NotEmpty @Length(min = 5)
     private String name;
    
-    @NotNull
+    @NotNull @Positive
     private Double total;
 
     public String getDescription() {

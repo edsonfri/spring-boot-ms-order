@@ -1,19 +1,13 @@
 package br.com.edson.msorder.config.validacao;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ErroDeRequestDto {
-    private String campo;
-    private String erro;
-
-    public ErroDeRequestDto(String campo, String erro) {
-        this.campo = campo;
-        this.erro = erro;
-    }
-
-    public String getCampo() {
-        return campo;
-    }
-
-    public String getErro() {
-        return erro;
-    }
+    private Integer status_code;
+    private String message;
 }
